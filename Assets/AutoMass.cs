@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AutoMass : MonoBehaviour {
 
+    public bool sphere = false;
+
 	void Awake () {
 
         Re();
@@ -13,7 +15,15 @@ public class AutoMass : MonoBehaviour {
         Rigidbody rig;
         try { rig = GetComponent<Rigidbody>(); } catch { return; }
 
-        rig.mass = Mathf.Pow((transform.localScale.x * transform.localScale.y * transform.localScale.z), 1.0f);
+        if(!sphere)
+        {
+            rig.mass = (transform.localScale.x * transform.localScale.y * transform.localScale.z);
+        }
+        else
+        {
+            rig.mass = (4 / 3) * Mathf.PI * Mathf.Pow(transform.localScale.x, 3);
+        }
+        
     }
 	
 }

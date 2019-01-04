@@ -38,16 +38,31 @@ public class Create : MonoBehaviour {
 
         for (int f = 0; f < floors; f++)
         {
+            // NS
             for (int sNS = 0; sNS < sideNS - 1; sNS++)
+            {
+                for (int sEW = 0; sEW < sideEW; sEW++)
+                {
+                    GameObject g = Instantiate(cubePre, new Vector3(
+                        ((crossBarNS.x / 2f) + crossBarNS.x * sNS) + crossBarNS.x / 2f,
+                        ((mainSup.y / 2f) + mainSup.y * f) + ((crossBarNS.y / 2f) + crossBarNS.y * f) + mainSup.y / 2f,
+                        ((crossBarEW.z / 2f) + crossBarEW.z * sEW)
+                        ), Quaternion.Euler(0, 0, 0));
+                    g.transform.localScale = crossBarNS;
+                }
+            }
+
+            // EW
+            for (int sNS = 0; sNS < sideNS; sNS++)
             {
                 for (int sEW = 0; sEW < sideEW - 1; sEW++)
                 {
                     GameObject g = Instantiate(cubePre, new Vector3(
-                        ((crossBarNS.x / 2f) + crossBarNS.x * sNS) + crossBarNS.x / 2f,
-                        ((mainSup.y / 2f) + mainSup.y * f) + ((crossBarNS.y / 2f) + crossBarNS.y * f),
+                        ((crossBarNS.x / 2f) + crossBarNS.x * sNS),
+                        ((mainSup.y / 2f) + mainSup.y * f) + ((crossBarNS.y / 2f) + crossBarNS.y * f) + mainSup.y / 2f,
                         ((crossBarEW.z / 2f) + crossBarEW.z * sEW) + crossBarEW.z / 2f
                         ), Quaternion.Euler(0, 0, 0));
-                    //sc
+                    g.transform.localScale = crossBarEW;
                 }
             }
         }

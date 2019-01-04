@@ -6,11 +6,11 @@ public class Create : MonoBehaviour {
 
     public GameObject planePre;
     public GameObject cubePre;
-    float floors = 4;
+    float floors = 8;
     float sideNS = 7;
     float sideEW = 6;
 
-    Vector3 mainSup = new Vector3(1, 4, 1);
+    Vector3 mainSup = new Vector3(1.5f, 4, 1.5f);
     Vector3 crossBarNS = new Vector3(9, 0.5f, 0.5f);
     Vector3 crossBarEW = new Vector3(0.5f, 0.5f, 9);
     Vector3 tiny = new Vector3(0.5f, 0.5f, 0.5f);
@@ -28,7 +28,7 @@ public class Create : MonoBehaviour {
                 {
                     GameObject g = Instantiate(cubePre, new Vector3(
                         ((crossBarNS.x / 2f) + crossBarNS.x * sNS), 
-                        ((mainSup.y / 2f) + mainSup.y * f) + ((crossBarNS.y / 2f) + crossBarNS.y * f), 
+                        ((mainSup.y / 2f) + mainSup.y * f) + (crossBarNS.y * f), 
                         ((crossBarEW.z / 2f) + crossBarEW.z * sEW)
                         ), Quaternion.Euler(0, 0, 0));
                     g.transform.localScale = mainSup;
@@ -44,11 +44,12 @@ public class Create : MonoBehaviour {
                 for (int sEW = 0; sEW < sideEW; sEW++)
                 {
                     GameObject g = Instantiate(cubePre, new Vector3(
-                        ((crossBarNS.x / 2f) + crossBarNS.x * sNS) + crossBarNS.x / 2f,
+                        ((crossBarNS.x / 2f) + crossBarNS.x * sNS) + (crossBarNS.x / 2f),
                         ((mainSup.y / 2f) + mainSup.y * f) + ((crossBarNS.y / 2f) + crossBarNS.y * f) + mainSup.y / 2f,
                         ((crossBarEW.z / 2f) + crossBarEW.z * sEW)
                         ), Quaternion.Euler(0, 0, 0));
                     g.transform.localScale = crossBarNS;
+                    g.transform.localScale = new Vector3(g.transform.localScale.x - (mainSup.x / 3f), g.transform.localScale.y, g.transform.localScale.z);
                 }
             }
 
@@ -60,9 +61,10 @@ public class Create : MonoBehaviour {
                     GameObject g = Instantiate(cubePre, new Vector3(
                         ((crossBarNS.x / 2f) + crossBarNS.x * sNS),
                         ((mainSup.y / 2f) + mainSup.y * f) + ((crossBarNS.y / 2f) + crossBarNS.y * f) + mainSup.y / 2f,
-                        ((crossBarEW.z / 2f) + crossBarEW.z * sEW) + crossBarEW.z / 2f
+                        ((crossBarEW.z / 2f) + crossBarEW.z * sEW) + (crossBarEW.z / 2f)
                         ), Quaternion.Euler(0, 0, 0));
                     g.transform.localScale = crossBarEW;
+                    g.transform.localScale = new Vector3(g.transform.localScale.x, g.transform.localScale.y, g.transform.localScale.z - (mainSup.x / 3f));
                 }
             }
         }

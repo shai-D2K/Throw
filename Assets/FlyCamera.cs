@@ -13,18 +13,23 @@ public class FlyCamera : MonoBehaviour {
     space : Moves camera on X and Z axis only.  So camera doesn't gain any height*/
      
      
-    float mainSpeed = 5.0f; //regular speed
-    float shiftAdd = 250.0f; //multiplied by how long shift is held.  Basically running
+    float mainSpeed = 25.0f; //regular speed
+    float shiftAdd = 50.0f; //multiplied by how long shift is held.  Basically running
     float maxShift = 1000.0f; //Maximum speed when holdin gshift
     float camSens = 0.25f; //How sensitive it with mouse
-    private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
+    private Vector3 lastMouse = new Vector3(0, 0, 0); //kind of in the middle of the screen, rather than at the top (play)
     private float totalRun= 1.0f;
-    public Vector3 mouseThing = new Vector3();
+    Vector3 mouseThing = new Vector3(0, 0, 0);
     float newSens = 6f;
 
     private void Awake()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        
+    }
+
+    private void Start()
+    {
+        Debug.Log(Input.GetAxis("Mouse X") + " " + Input.GetAxis("Mouse Y"));
     }
 
     void Update () {
@@ -63,7 +68,58 @@ public class FlyCamera : MonoBehaviour {
         else{
             transform.Translate(p);
         }
+
+        /*
+        //Debug.Log("a" + ((transform.rotation.eulerAngles.x) < 90) + " " +(transform.rotation.eulerAngles.x));
+        //Debug.Log("b" + ((transform.rotation.eulerAngles.x) > -90) + " " + FixAngle(transform.rotation.eulerAngles.x))
+        Debug.Log(transform.rotation.eulerAngles.x);
+
+        //if (!(transform.rotation.eulerAngles.x < 90 && transform.rotation.eulerAngles.x > -90))
+        if(transform.rotation.eulerAngles.x > 89 && transform.rotation.eulerAngles.x < 271)
+        {
+            Debug.Log("Bad");
+            
+            if(transform.rotation.eulerAngles.x > 89)
+            {
+                transform.rotation = Quaternion.Euler( 88, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+                Debug.Log("High");
+            }
+            else if (transform.rotation.eulerAngles.x < 271)
+            {
+                transform.rotation = Quaternion.Euler(272, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+                Debug.Log("Low");
+            }
+
+        }
+        */
+
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            if(Cursor.lockState == CursorLockMode.Locked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else if (Cursor.lockState == CursorLockMode.None)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
        
+    }
+
+    float FixAngle(float a)
+    {
+        while(a > 360f)
+        {
+            a -= 360f;
+        }
+
+        while (a < 0f)
+        {
+            a += 360f;
+        }
+
+        return a;
     }
      
     private Vector3 GetBaseInput() { //returns the basic values, if it's 0 than it's not active.

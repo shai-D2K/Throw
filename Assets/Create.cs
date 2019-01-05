@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System;
 
 public class Create : MonoBehaviour {
 
@@ -8,7 +10,10 @@ public class Create : MonoBehaviour {
     public GameObject cubePre;
     int floors = 8;
     int sideNS = 7;
-    int sideEW = 6;
+    int sideEW = 7;
+    public InputField txtFloor;
+    public InputField txtNS;
+    public InputField txtEW;
 
     Vector3 mainSup = new Vector3(1.5f, 4, 1.5f);
     Vector3 crossBarNS = new Vector3(7, 0.5f, 0.5f);
@@ -18,24 +23,56 @@ public class Create : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        pills = new GameObject[floors,sideNS,sideEW];
+        txtFloor.text = floors.ToString();
+        txtNS.text = sideNS.ToString();
+        txtEW.text = sideEW.ToString();
+        Fill();
+    }
+	
+	// Update is called once per frame
+	void Update () {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            DynObj[] objs = FindObjectsOfType<DynObj>();
+
+            for(int i = 0; i < objs.Length; i++)
+            {
+                Destroy(objs[i].gameObject);
+            }
+
+            Fill();
+        }
+	}
+
+    void Fill()
+    {
+        floors = Convert.ToInt32(txtFloor.text);
+        sideNS = Convert.ToInt32(txtNS.text);
+        sideEW = Convert.ToInt32(txtEW.text);
+
+        pills = new GameObject[floors, sideNS, sideEW];
+
+        GameObject @base = GameObject.Find("Base");
+        @base.transform.position = Vector3.zero;
+
 
         GameObject p = Instantiate(planePre, Vector3.zero, Quaternion.Euler(0, 0, 0));
         p.transform.localScale = new Vector3(20, 20, 20);
 
-        for(int f = 0; f < floors; f++)
+        for (int f = 0; f < floors; f++)
         {
-            for(int sNS = 0; sNS < sideNS; sNS++)
+            for (int sNS = 0; sNS < sideNS; sNS++)
             {
                 for (int sEW = 0; sEW < sideEW; sEW++)
                 {
                     GameObject g = Instantiate(cubePre, new Vector3(
-                        ((crossBarNS.x / 2f) + crossBarNS.x * sNS), 
-                        ((mainSup.y / 2f) + mainSup.y * f) + (crossBarNS.y * f), 
+                        ((crossBarNS.x / 2f) + crossBarNS.x * sNS),
+                        ((mainSup.y / 2f) + mainSup.y * f) + (crossBarNS.y * f),
                         ((crossBarEW.z / 2f) + crossBarEW.z * sEW)
-                        ), Quaternion.Euler(0, 0, 0));
+                        ), Quaternion.Euler(0, 0, 0), @base.transform);
                     g.transform.localScale = mainSup;
-                    
+                    g.GetComponent<AutoMass>().Re();
+
                     pills[f, sNS, sEW] = g;
                 }
             }
@@ -52,7 +89,7 @@ public class Create : MonoBehaviour {
                         ((crossBarNS.x / 2f) + crossBarNS.x * sNS),
                         ((mainSup.y / 2f) + mainSup.y * f) + ((crossBarNS.y / 2f) + crossBarNS.y * f) + mainSup.y / 2f,
                         ((crossBarEW.z / 2f) + crossBarEW.z * sEW)
-                        ), Quaternion.Euler(0, 0, 0));
+                        ), Quaternion.Euler(0, 0, 0), @base.transform);
                     g.transform.localScale = tiny;
                     //g.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Discrete;
                     g.AddComponent(typeof(FixedJoint));
@@ -62,7 +99,7 @@ public class Create : MonoBehaviour {
                        ((crossBarNS.x / 2f) + crossBarNS.x * sNS) - (mainSup.x / 3f),
                        ((mainSup.y / 2f) + mainSup.y * f) + ((crossBarNS.y / 2f) + crossBarNS.y * f) + mainSup.y / 2f,
                        ((crossBarEW.z / 2f) + crossBarEW.z * sEW) - (mainSup.x / 3f)
-                       ), Quaternion.Euler(0, 0, 0));
+                       ), Quaternion.Euler(0, 0, 0), @base.transform);
                     g1.transform.localScale = tiny;
                     //g1.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Discrete;
                     g1.AddComponent(typeof(FixedJoint));
@@ -72,7 +109,7 @@ public class Create : MonoBehaviour {
                        ((crossBarNS.x / 2f) + crossBarNS.x * sNS) + (mainSup.x / 3f),
                        ((mainSup.y / 2f) + mainSup.y * f) + ((crossBarNS.y / 2f) + crossBarNS.y * f) + mainSup.y / 2f,
                        ((crossBarEW.z / 2f) + crossBarEW.z * sEW) - (mainSup.x / 3f)
-                       ), Quaternion.Euler(0, 0, 0));
+                       ), Quaternion.Euler(0, 0, 0), @base.transform);
                     g2.transform.localScale = tiny;
                     //g2.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Discrete;
                     g2.AddComponent(typeof(FixedJoint));
@@ -82,7 +119,7 @@ public class Create : MonoBehaviour {
                        ((crossBarNS.x / 2f) + crossBarNS.x * sNS) + (mainSup.x / 3f),
                        ((mainSup.y / 2f) + mainSup.y * f) + ((crossBarNS.y / 2f) + crossBarNS.y * f) + mainSup.y / 2f,
                        ((crossBarEW.z / 2f) + crossBarEW.z * sEW) + (mainSup.x / 3f)
-                       ), Quaternion.Euler(0, 0, 0));
+                       ), Quaternion.Euler(0, 0, 0), @base.transform);
                     g3.transform.localScale = tiny;
                     //g3.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Discrete;
                     g3.AddComponent(typeof(FixedJoint));
@@ -92,7 +129,7 @@ public class Create : MonoBehaviour {
                        ((crossBarNS.x / 2f) + crossBarNS.x * sNS) - (mainSup.x / 3f),
                        ((mainSup.y / 2f) + mainSup.y * f) + ((crossBarNS.y / 2f) + crossBarNS.y * f) + mainSup.y / 2f,
                        ((crossBarEW.z / 2f) + crossBarEW.z * sEW) + (mainSup.x / 3f)
-                       ), Quaternion.Euler(0, 0, 0));
+                       ), Quaternion.Euler(0, 0, 0), @base.transform);
                     g4.transform.localScale = tiny;
                     //g4.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Discrete;
                     g4.AddComponent(typeof(FixedJoint));
@@ -113,9 +150,10 @@ public class Create : MonoBehaviour {
                         ((crossBarNS.x / 2f) + crossBarNS.x * sNS) + (crossBarNS.x / 2f),
                         ((mainSup.y / 2f) + mainSup.y * f) + ((crossBarNS.y / 2f) + crossBarNS.y * f) + mainSup.y / 2f,
                         ((crossBarEW.z / 2f) + crossBarEW.z * sEW)
-                        ), Quaternion.Euler(0, 0, 0));
+                        ), Quaternion.Euler(0, 0, 0), @base.transform);
                     g.transform.localScale = crossBarNS;
                     g.transform.localScale = new Vector3(g.transform.localScale.x - (mainSup.x / 3f), g.transform.localScale.y, g.transform.localScale.z);
+                    g.GetComponent<AutoMass>().Re();
                 }
             }
 
@@ -128,26 +166,29 @@ public class Create : MonoBehaviour {
                         ((crossBarNS.x / 2f) + crossBarNS.x * sNS),
                         ((mainSup.y / 2f) + mainSup.y * f) + ((crossBarNS.y / 2f) + crossBarNS.y * f) + mainSup.y / 2f,
                         ((crossBarEW.z / 2f) + crossBarEW.z * sEW) + (crossBarEW.z / 2f)
-                        ), Quaternion.Euler(0, 0, 0));
+                        ), Quaternion.Euler(0, 0, 0), @base.transform);
                     g.transform.localScale = crossBarEW;
                     g.transform.localScale = new Vector3(g.transform.localScale.x, g.transform.localScale.y, g.transform.localScale.z - (mainSup.x / 3f));
+                    g.GetComponent<AutoMass>().Re();
                 }
             }
         }
-    }
-	
-	// Update is called once per frame
-	void Update () {
-        if (Input.GetKeyDown(KeyCode.R))
+
+        // Roof
+        /*for (int sNS = 0; sNS < sideNS - 1; sNS++)
         {
-            DynObj[] objs = FindObjectsOfType<DynObj>();
-
-            for(int i = 0; i < objs.Length; i++)
+            for (int sEW = 0; sEW < sideEW - 1; sEW++)
             {
-                Destroy(objs[i].gameObject);
+                GameObject g = Instantiate(cubePre, new Vector3(
+                        ((crossBarNS.x / 2f) + crossBarNS.x * sNS) + (crossBarNS.x / 2f),
+                        ((mainSup.y / 2f) + mainSup.y * floors) + ((crossBarNS.y / 2f) + crossBarNS.y * floors) + mainSup.y / 2f,
+                        ((crossBarEW.z / 2f) + crossBarEW.z * sEW) + (crossBarEW.z / 2f)
+                        ), Quaternion.Euler(0, 0, 0), @base.transform);
+                g.transform.localScale = new Vector3(crossBarNS.x, tiny.y, crossBarEW.z);
+                g.GetComponent<AutoMass>().Re();
             }
+        }*/
 
-            Start();
-        }
-	}
+        @base.transform.position = new Vector3(-((crossBarNS.x * sideNS) / 2), 0, -((crossBarEW.z * sideEW) / 2));
+    }
 }

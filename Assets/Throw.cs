@@ -23,5 +23,18 @@ public class Throw : MonoBehaviour {
             rig.AddForce(Camera.main.transform.forward * 15000f);
 
         }
-	}
+        else if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
+            {
+                if(hit.transform.GetComponent<DynObj>().canDelete)
+                {
+                    Destroy(hit.transform.gameObject);
+                    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+                    Debug.Log("Did Hit");
+                }
+            }
+        }
+    }
 }

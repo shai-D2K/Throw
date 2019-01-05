@@ -30,6 +30,7 @@ public class FlyCamera : MonoBehaviour {
     private void Start()
     {
         Debug.Log(Input.GetAxis("Mouse X") + " " + Input.GetAxis("Mouse Y"));
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update () {

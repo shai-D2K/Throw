@@ -5,22 +5,34 @@ using UnityEngine;
 public class Throw : MonoBehaviour {
 
     public GameObject ballPrefab;
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    GameObject @base;
+    float velocity = 5000f;//15000f
+    public bool isPaused = false;
+
+    // Use this for initialization
+    void Start () {
+        @base = GameObject.Find("Base");
+    }
+
+    void Update()
+    {
+        if (!isPaused)
+        {
+            Run();
+        }
+    }
+
+    // Update is called once per frame
+    void Run () {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Debug.Log("E");
-            GameObject b = Instantiate(ballPrefab, Camera.main.transform.position, Quaternion.Euler(Vector3.zero));
+            GameObject b = Instantiate(ballPrefab, Camera.main.transform.position, Quaternion.Euler(Vector3.zero), @base.transform);
 
             Rigidbody rig;
             try { rig = b.GetComponent<Rigidbody>(); } catch { Debug.LogError("Missing Compenent"); return; }
 
-            rig.AddForce(Camera.main.transform.forward * 15000f);
+            rig.AddForce(Camera.main.transform.forward * velocity);
 
         }
         else if (Input.GetKeyDown(KeyCode.Mouse1))

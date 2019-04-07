@@ -16,11 +16,13 @@ public class FlyCamera : MonoBehaviour {
     float mainSpeed = 25.0f; //regular speed
     float shiftAdd = 50.0f; //multiplied by how long shift is held.  Basically running
     float maxShift = 1000.0f; //Maximum speed when holdin gshift
-    float camSens = 0.25f; //How sensitive it with mouse
+    public float camSens = 0.25f; //How sensitive it with mouse
     private Vector3 lastMouse = new Vector3(0, 0, 0); //kind of in the middle of the screen, rather than at the top (play)
     private float totalRun= 1.0f;
     Vector3 mouseThing = new Vector3(0, 0, 0);
     float newSens = 6f;
+
+    public bool isPaused = false;
 
     private void Awake()
     {
@@ -33,7 +35,15 @@ public class FlyCamera : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    void Update () {
+    void Update()
+    {
+        if(!isPaused)
+        {
+            Run();
+        }
+    }
+
+    public void Run () {
         mouseThing = new Vector3(mouseThing.x + (Input.GetAxis("Mouse X") * newSens), mouseThing.y + (Input.GetAxis("Mouse Y") * newSens), mouseThing.z);
 
         lastMouse = mouseThing - lastMouse ;
@@ -46,7 +56,7 @@ public class FlyCamera : MonoBehaviour {
         //Keyboard commands
         float f = 0.0f;
         Vector3 p = GetBaseInput();
-        if (Input.GetKey (KeyCode.LeftShift)){
+        if (Input.GetKey (KeyCode.Space)){
             totalRun += Time.deltaTime;
             p  = p * totalRun * shiftAdd;
             p.x = Mathf.Clamp(p.x, -maxShift, maxShift);
@@ -60,7 +70,7 @@ public class FlyCamera : MonoBehaviour {
        
         p = p * Time.deltaTime;
        Vector3 newPosition = transform.position;
-        if (Input.GetKey(KeyCode.Space)){ //If player wants to move on X and Z axis only
+        if (Input.GetKey(KeyCode.LeftAlt)){ //If player wants to move on X and Z axis only
             transform.Translate(p);
             newPosition.x = transform.position.x;
             newPosition.z = transform.position.z;
@@ -94,7 +104,7 @@ public class FlyCamera : MonoBehaviour {
         }
         */
 
-        if(Input.GetKeyDown(KeyCode.U))
+        /*if(Input.GetKeyDown(KeyCode.U))
         {
             if(Cursor.lockState == CursorLockMode.Locked)
             {
@@ -104,7 +114,7 @@ public class FlyCamera : MonoBehaviour {
             {
                 Cursor.lockState = CursorLockMode.Locked;
             }
-        }
+        }*/
        
     }
 
@@ -136,6 +146,15 @@ public class FlyCamera : MonoBehaviour {
         }
         if (Input.GetKey (KeyCode.D)){
             p_Velocity += new Vector3(1, 0, 0);
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            p_Velocity += new Vector3(0, 1, 0);
+        }
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            p_Velocity += new Vector3(0, -1, 0);
         }
         return p_Velocity;
     }

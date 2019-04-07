@@ -8,12 +8,10 @@ public class Create : MonoBehaviour {
 
     public GameObject planePre;
     public GameObject cubePre;
-    int floors = 8;
-    int sideNS = 7;
-    int sideEW = 7;
-    public InputField txtFloor;
-    public InputField txtNS;
-    public InputField txtEW;
+    public int floors = 8;
+    public int sideNS = 7;
+    public int sideEW = 7;
+    
 
     Vector3 mainSup = new Vector3(1.5f, 4, 1.5f);
     Vector3 crossBarNS = new Vector3(7, 0.5f, 0.5f);
@@ -23,9 +21,9 @@ public class Create : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        txtFloor.text = floors.ToString();
-        txtNS.text = sideNS.ToString();
-        txtEW.text = sideEW.ToString();
+        //txtFloor.text = floors.ToString();
+        //txtNS.text = sideNS.ToString();
+        //txtEW.text = sideEW.ToString();
         Fill();
     }
 	
@@ -46,9 +44,9 @@ public class Create : MonoBehaviour {
 
     void Fill()
     {
-        floors = Convert.ToInt32(txtFloor.text);
-        sideNS = Convert.ToInt32(txtNS.text);
-        sideEW = Convert.ToInt32(txtEW.text);
+        //floors = Convert.ToInt32(txtFloor.text);
+        //sideNS = Convert.ToInt32(txtNS.text);
+        //sideEW = Convert.ToInt32(txtEW.text);
 
         pills = new GameObject[floors, sideNS, sideEW];
 
@@ -56,7 +54,7 @@ public class Create : MonoBehaviour {
         @base.transform.position = Vector3.zero;
 
 
-        GameObject p = Instantiate(planePre, Vector3.zero, Quaternion.Euler(0, 0, 0));
+        GameObject p = Instantiate(planePre, Vector3.zero, Quaternion.Euler(0, 0, 0), @base.transform);
         p.transform.localScale = new Vector3(20, 20, 20);
 
         for (int f = 0; f < floors; f++)

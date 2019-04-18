@@ -25,10 +25,22 @@ public class OptionsManager : MonoBehaviour {
         create = FindObjectOfType<Create>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	public void CheckValues () {
+		if(Convert.ToInt32(txtFloor.text) > 20)
+        {
+            txtFloor.text = "20";
+        }
+
+        if (Convert.ToInt32(txtNS.text) > 20)
+        {
+            txtNS.text = "20";
+        }
+
+        if (Convert.ToInt32(txtEW.text) > 20)
+        {
+            txtEW.text = "20";
+        }
+    }
 
     public void SetSettings()
     {

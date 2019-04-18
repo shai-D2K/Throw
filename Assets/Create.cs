@@ -31,16 +31,21 @@ public class Create : MonoBehaviour {
 	void Update () {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            DynObj[] objs = FindObjectsOfType<DynObj>();
-
-            for(int i = 0; i < objs.Length; i++)
-            {
-                Destroy(objs[i].gameObject);
-            }
-
-            Fill();
+            Reload();
         }
 	}
+
+    public void Reload()
+    {
+        DynObj[] objs = FindObjectsOfType<DynObj>();
+
+        for (int i = 0; i < objs.Length; i++)
+        {
+            Destroy(objs[i].gameObject);
+        }
+
+        Fill();
+    }
 
     void Fill()
     {
@@ -53,9 +58,12 @@ public class Create : MonoBehaviour {
         GameObject @base = GameObject.Find("Base");
         @base.transform.position = Vector3.zero;
 
+        GameObject inner = GameObject.Find("Inner");
+        inner.transform.position = Vector3.zero;
+
 
         GameObject p = Instantiate(planePre, Vector3.zero, Quaternion.Euler(0, 0, 0), @base.transform);
-        p.transform.localScale = new Vector3(20, 20, 20);
+        p.transform.localScale = new Vector3(30, 30, 30);
 
         for (int f = 0; f < floors; f++)
         {
@@ -67,9 +75,9 @@ public class Create : MonoBehaviour {
                         ((crossBarNS.x / 2f) + crossBarNS.x * sNS),
                         ((mainSup.y / 2f) + mainSup.y * f) + (crossBarNS.y * f),
                         ((crossBarEW.z / 2f) + crossBarEW.z * sEW)
-                        ), Quaternion.Euler(0, 0, 0), @base.transform);
+                        ), Quaternion.Euler(0, 0, 0), inner.transform);
                     g.transform.localScale = mainSup;
-                    g.GetComponent<AutoMass>().Re();
+                    g.GetComponent<AutoMass>().Re(f, floors);
 
                     pills[f, sNS, sEW] = g;
                 }
@@ -148,10 +156,10 @@ public class Create : MonoBehaviour {
                         ((crossBarNS.x / 2f) + crossBarNS.x * sNS) + (crossBarNS.x / 2f),
                         ((mainSup.y / 2f) + mainSup.y * f) + ((crossBarNS.y / 2f) + crossBarNS.y * f) + mainSup.y / 2f,
                         ((crossBarEW.z / 2f) + crossBarEW.z * sEW)
-                        ), Quaternion.Euler(0, 0, 0), @base.transform);
+                        ), Quaternion.Euler(0, 0, 0), inner.transform);
                     g.transform.localScale = crossBarNS;
                     g.transform.localScale = new Vector3(g.transform.localScale.x - (mainSup.x / 3f), g.transform.localScale.y, g.transform.localScale.z);
-                    g.GetComponent<AutoMass>().Re();
+                    g.GetComponent<AutoMass>().Re(f, floors);
                 }
             }
 
@@ -164,10 +172,10 @@ public class Create : MonoBehaviour {
                         ((crossBarNS.x / 2f) + crossBarNS.x * sNS),
                         ((mainSup.y / 2f) + mainSup.y * f) + ((crossBarNS.y / 2f) + crossBarNS.y * f) + mainSup.y / 2f,
                         ((crossBarEW.z / 2f) + crossBarEW.z * sEW) + (crossBarEW.z / 2f)
-                        ), Quaternion.Euler(0, 0, 0), @base.transform);
+                        ), Quaternion.Euler(0, 0, 0), inner.transform);
                     g.transform.localScale = crossBarEW;
                     g.transform.localScale = new Vector3(g.transform.localScale.x, g.transform.localScale.y, g.transform.localScale.z - (mainSup.x / 3f));
-                    g.GetComponent<AutoMass>().Re();
+                    g.GetComponent<AutoMass>().Re(f, floors);
                 }
             }
         }
@@ -187,6 +195,8 @@ public class Create : MonoBehaviour {
             }
         }*/
 
-        @base.transform.position = new Vector3(-((crossBarNS.x * sideNS) / 2), 0, -((crossBarEW.z * sideEW) / 2));
+
+
+        inner.transform.position = new Vector3(-((crossBarNS.x * sideNS) / 2), 0, -((crossBarEW.z * sideEW) / 2));
     }
 }

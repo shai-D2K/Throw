@@ -8,6 +8,7 @@ public class MenuManager : MonoBehaviour {
     public bool menuOpen = false;
 
     public GameObject menuPanel;
+    public GameObject helpPanel;
 
     FlyCamera cam;
     Throw @throw;
@@ -53,6 +54,7 @@ public class MenuManager : MonoBehaviour {
         cam.isPaused = false;
         @throw.isPaused = false;
         menuPanel.gameObject.SetActive(false);
+        helpPanel.gameObject.SetActive(false);
     }
 
     public void Quit()

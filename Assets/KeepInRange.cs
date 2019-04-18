@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class KeepInRange : MonoBehaviour {
 
-    Vector3 rangeLow = new Vector3(-150, 0, -150);
+    Vector3 rangeLow = new Vector3(-150, 0.5f, -150);
     Vector3 rangeHigh = new Vector3(150, 150, 150);
-    float nudge = 2f;
+    float nudge = 0f;
 
     // Use this for initialization
     void Start () {

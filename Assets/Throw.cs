@@ -27,6 +27,7 @@ public class Throw : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Debug.Log("E");
+            FindObjectOfType<Create>().firedBalls++;
             GameObject b = Instantiate(ballPrefab, Camera.main.transform.position, Quaternion.Euler(Vector3.zero), @base.transform);
 
             Rigidbody rig;
@@ -35,7 +36,7 @@ public class Throw : MonoBehaviour {
             rig.AddForce(Camera.main.transform.forward * velocity);
 
         }
-        else if (Input.GetKeyDown(KeyCode.Mouse1))
+        else if (Input.GetKeyDown(KeyCode.Mouse1) && false == true)
         {
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))

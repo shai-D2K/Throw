@@ -18,6 +18,9 @@ public class Create : MonoBehaviour {
     Vector3 crossBarEW = new Vector3(0.5f, 0.5f, 7);
     Vector3 tiny = new Vector3(0.5f, 0.5f, 0.5f);
     GameObject[,,] pills;
+    KnockedOver[] allBlocks;
+    public Text remaining;
+    public int firedBalls = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -33,7 +36,22 @@ public class Create : MonoBehaviour {
         {
             Reload();
         }
-	}
+
+        int count = 0;
+        allBlocks = FindObjectsOfType<KnockedOver>();
+        for (int i = 0; i < allBlocks.Length; i++)
+        {
+            if(allBlocks[i].knockedOver)
+            {
+                count++;
+            }
+        }
+
+        //Debug.Log(allBlocks.Length + " " + count);
+
+        remaining.text = "Remaining Blocks: " + (allBlocks.Length - count) + "/" + allBlocks.Length + "\nShots: " + firedBalls;
+
+    }
 
     public void Reload()
     {
@@ -198,5 +216,8 @@ public class Create : MonoBehaviour {
 
 
         inner.transform.position = new Vector3(-((crossBarNS.x * sideNS) / 2), 0, -((crossBarEW.z * sideEW) / 2));
+
+        firedBalls = 0;
+
     }
 }
